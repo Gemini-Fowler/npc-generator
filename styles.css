@@ -1,12 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative&family=Open+Sans&display=swap');
+
 body {
-    font-family: sans-serif;
-    background-color: #F5F0E1;
-    color: #2E4A3B;
-    padding: 20px;
+  font-family: 'Open Sans', sans-serif;
+  background: url('https://www.transparenttextures.com/patterns/paper-fibers.png') repeat;
+  background-color: #f5f0e1;
+  color: #2E4A3B;
+  padding: 40px;
+  max-width: 800px;
+  margin: auto;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
 }
-#npcCard {
-    margin-top: 20px;
-    border: 1px solid #2E4A3B;
-    padding: 10px;
-    background-color: #fff;
+
+h1 {
+  font-family: 'Cinzel Decorative', serif;
+  color: #D4AF37;
+  text-align: center;
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  text-shadow: 1px 1px #2E4A3B;
 }
+
+button {
+  background-color: #2E4A3B;
+  color: #F5F0E1;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1em;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: block;
+  margin: 0 auto 30px auto;
+}
+
+button:hover {
+  background-color: #3f6b58;
+  transform: scale(1.05);
+}
+
+.npc-card {
+  background-color: #fff;
+  border: 2px solid #2E4A3B;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(46, 74, 59, 0.3);
+  font-size: 1.1em;
+  line-height: 1.6;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.npc-card.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.npc-card h2 {
+  font-family: 'Cinzel Decorative', serif;
+  color: #2E4A3B;
+  margin-bottom: 10px;
+}
+
+.npc-card p {
+  margin: 8px 0;
+}
+
+/* Dynamic race themes */
+.npc-card.elf { border-color: #6B8E23; }
+.npc-card.tiefling { border-color: #8B0000; }
+.npc-card.dragonborn { border-color: #4682B4; }
+.npc-card.orc { border-color: #556B2F; }
