@@ -14,5 +14,6 @@ document.getElementById("generateBtn").addEventListener("click", () => {
   document.getElementById("npcCard").innerHTML = `
     <h2>${npc.race} ${npc.class}</h2>
     <p>Personality: ${npc.trait}</p>
+    <p>Flaw: ${npc.flaw}</p>
   `;
 });
