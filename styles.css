@@ -30,8 +30,7 @@ button {
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
-  display: block;
-  margin: 0 auto 30px auto;
+  margin: 10px;
 }
 
 button:hover {
@@ -67,7 +66,11 @@ button:hover {
   margin: 8px 0;
 }
 
-/* Dynamic race themes */
+#customBuilder {
+  margin: 20px 0;
+}
+
+/* Race-based themes */
 .npc-card.elf { border-color: #6B8E23; }
 .npc-card.tiefling { border-color: #8B0000; }
 .npc-card.dragonborn { border-color: #4682B4; }

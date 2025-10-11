@@ -17,7 +17,7 @@ const backgrounds = [
   "Acolyte", "Entertainer", "Guild Artisan", "Outlander", "Sage", "Urchin"
 ];
 
-const levels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+const levels = [1, 2, 3, 4, 5];
 
 const traits = {
   alignment: ["Lawful", "Neutral", "Chaotic"],
@@ -33,14 +33,24 @@ const flaws = [
   "Skeptical", "Timid", "Untrustworthy"
 ];
 
+const quirks = [
+  "Always speaks in rhyme", "Collects shiny rocks", "Talks to their pet like it's a person",
+  "Obsessed with tea rituals", "Carries a mysterious locked box", "Laughs at inappropriate times",
+  "Refuses to wear shoes", "Writes everything in a tiny notebook", "Has an imaginary friend",
+  "Thinks they're being followed", "Only eats food in pairs", "Talks to plants",
+  "Believes they're royalty", "Wears a mask at all times", "Is convinced they're cursed",
+  "Sings instead of speaking", "Carries a rubber duck for luck", "Is terrified of birds",
+  "Refuses to say their real name", "Always offers unsolicited advice"
+];
+
 function getRandom(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-function generateNPC() {
+function generateNPC(custom = {}) {
   return {
-    race: getRandom(races),
-    class: getRandom(classes),
+    race: custom.race || getRandom(races),
+    class: custom.class || getRandom(classes),
     background: getRandom(backgrounds),
     level: getRandom(levels),
     personality: {
@@ -48,22 +58,16 @@ function generateNPC() {
       social: getRandom(traits.social),
       outlook: getRandom(traits.outlook),
       flaw: getRandom(flaws)
-    }
+    },
+    quirk: getRandom(quirks)
   };
 }
 
-document.getElementById("generateBtn").addEventListener("click", () => {
-  const npc = generateNPC();
+function displayNPC(npc) {
   const card = document.getElementById("npcCard");
-
-  // Clear previous race class
   card.className = "npc-card";
-
-  // Add race-based theme class (lowercase)
   const raceClass = npc.race.toLowerCase().replace(/\s+/g, '-');
   card.classList.add(raceClass);
-
-  // Add animation class
   setTimeout(() => card.classList.add("show"), 50);
 
   card.innerHTML = `
@@ -71,5 +75,37 @@ document.getElementById("generateBtn").addEventListener("click", () => {
     <p><strong>Background:</strong> ${npc.background}</p>
     <p><strong>Personality:</strong> ${npc.personality.alignment}, ${npc.personality.social}, ${npc.personality.outlook}</p>
     <p><strong>Flaw:</strong> ${npc.personality.flaw}</p>
+    <p><strong>Quirk:</strong> ${npc.quirk}</p>
   `;
+}
+
+document.getElementById("generateBtn").addEventListener("click", () => {
+  const npc = generateNPC();
+  displayNPC(npc);
+});
+
+document.getElementById("saveBtn").addEventListener("click", () => {
+  const npc = document.getElementById("npcCard").innerText;
+  let savedNPCs = JSON.parse(localStorage.getItem("savedNPCs")) || [];
+  savedNPCs.push(npc);
+  localStorage.setItem("savedNPCs", JSON.stringify(savedNPCs));
+  alert("NPC saved!");
+});
+
+document.getElementById("exportBtn").addEventListener("click", () => {
+  const npc = generateNPC();
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(npc, null, 2));
+  const downloadAnchor = document.createElement('a');
+  downloadAnchor.setAttribute("href", dataStr);
+  downloadAnchor.setAttribute("download", "npc.json");
+  document.body.appendChild(downloadAnchor);
+  downloadAnchor.click();
+  downloadAnchor.remove();
+});
+
+document.getElementById("buildBtn").addEventListener("click", () => {
+  const race = document.getElementById("raceSelect").value;
+  const classType = document.getElementById("classSelect").value;
+  const npc = generateNPC({ race, class: classType });
+  displayNPC(npc);
 });

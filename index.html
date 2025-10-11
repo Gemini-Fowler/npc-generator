@@ -7,8 +7,32 @@
 </head>
 <body>
   <h1>NPC Generator</h1>
+
   <button id="generateBtn">Generate NPC</button>
+  <button id="saveBtn">Save NPC</button>
+  <button id="exportBtn">Export NPC</button>
+
+  <div id="customBuilder">
+    <h3>Custom NPC Builder</h3>
+    <select id="raceSelect">
+      <option value="">Choose Race</option>
+      <option value="Elf">Elf</option>
+      <option value="Orc">Orc</option>
+      <option value="Tiefling">Tiefling</option>
+      <option value="Dragonborn">Dragonborn</option>
+    </select>
+    <select id="classSelect">
+      <option value="">Choose Class</option>
+      <option value="Wizard">Wizard</option>
+      <option value="Rogue">Rogue</option>
+      <option value="Fighter">Fighter</option>
+      <option value="Cleric">Cleric</option>
+    </select>
+    <button id="buildBtn">Build Custom NPC</button>
+  </div>
+
   <div id="npcCard" class="npc-card"></div>
+
   <script src="script.js"></script>
 </body>
 </html>
