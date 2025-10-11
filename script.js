@@ -25,6 +25,8 @@ const traits = {
   outlook: ["Optimist", "Realist", "Cynic"]
 };
 
+const morality = ["Evil", "Neutral", "Good"];
+
 const flaws = [
   "Greedy", "Arrogant", "Cowardly", "Impulsive", "Stubborn", "Lazy", "Jealous",
   "Vengeful", "Pessimistic", "Hot-tempered", "Gullible", "Overconfident",
@@ -47,6 +49,32 @@ function getRandom(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
+function getSliderValue(id, options) {
+  const index = parseInt(document.getElementById(id).value);
+  return options[index];
+}
+
+function populateDropdown(id, options) {
+  const select = document.getElementById(id);
+  options.forEach(opt => {
+    const option = document.createElement("option");
+    option.value = opt;
+    option.textContent = opt;
+    select.appendChild(option);
+  });
+}
+
+populateDropdown("raceSelect", races);
+populateDropdown("classSelect", classes);
+
+["alignmentSlider", "moralitySlider", "socialSlider", "outlookSlider"].forEach(id => {
+  document.getElementById(id).addEventListener("input", () => {
+    const labelId = id.replace("Slider", "Value");
+    const options = id === "moralitySlider" ? morality : traits[id.replace("Slider", "")];
+    document.getElementById(labelId).textContent = options[parseInt(document.getElementById(id).value)];
+  });
+});
+
 function generateNPC(custom = {}) {
   return {
     race: custom.race || getRandom(races),
@@ -54,7 +82,7 @@ function generateNPC(custom = {}) {
     background: getRandom(backgrounds),
     level: getRandom(levels),
     personality: {
-      alignment: getRandom(traits.alignment),
+      alignment: getRandom(traits.alignment) + " " + getRandom(morality),
       social: getRandom(traits.social),
       outlook: getRandom(traits.outlook),
       flaw: getRandom(flaws)
@@ -112,6 +140,25 @@ document.getElementById("exportBtn").addEventListener("click", () => {
 document.getElementById("buildBtn").addEventListener("click", () => {
   const race = document.getElementById("raceSelect").value;
   const classType = document.getElementById("classSelect").value;
-  const npc = generateNPC({ race, class: classType });
+
+  const alignment = getSliderValue("alignmentSlider", traits.alignment);
+  const moralityValue = getSliderValue("moralitySlider", morality);
+  const social = getSliderValue("socialSlider", traits.social);
+  const outlook = getSliderValue("outlookSlider", traits.outlook);
+
+  const npc = {
+    race: race || getRandom(races),
+    class: classType || getRandom(classes),
+    background: getRandom(backgrounds),
+    level: getRandom(levels),
+    personality: {
+      alignment: `${alignment} ${moralityValue}`,
+      social: social,
+      outlook: outlook,
+      flaw: getRandom(flaws)
+    },
+    quirk: getRandom(quirks)
+  };
+
   displayNPC(npc);
 });
