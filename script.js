@@ -66,9 +66,15 @@ function generateNPC(custom = {}) {
 function displayNPC(npc) {
   const card = document.getElementById("npcCard");
   card.className = "npc-card";
+
   const raceClass = npc.race.toLowerCase().replace(/\s+/g, '-');
-  card.classList.add(raceClass);
-  setTimeout(() => card.classList.add("show"), 50);
+  const classTheme = npc.class.toLowerCase().replace(/\s+/g, '-');
+  card.classList.add(raceClass, classTheme, "animate");
+
+  setTimeout(() => {
+    card.classList.add("show");
+    card.classList.remove("animate");
+  }, 600);
 
   card.innerHTML = `
     <h2>${npc.race} ${npc.class} (Level ${npc.level})</h2>

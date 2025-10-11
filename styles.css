@@ -39,11 +39,12 @@ button:hover {
 }
 
 .npc-card {
-  background-color: #fff;
-  border: 2px solid #2E4A3B;
-  border-radius: 10px;
+  background: url('https://www.transparenttextures.com/patterns/old-mathematics.png') repeat;
+  background-color: #fdf6e3;
+  border: 12px solid #d2b48c;
+  border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 0 10px rgba(46, 74, 59, 0.3);
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
   font-size: 1.1em;
   line-height: 1.6;
   opacity: 0;
@@ -54,6 +55,16 @@ button:hover {
 .npc-card.show {
   opacity: 1;
   transform: translateY(0);
+}
+
+.npc-card.animate {
+  animation: diceRoll 0.6s ease-in-out;
+}
+
+@keyframes diceRoll {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(360deg) scale(1.2); }
+  100% { transform: rotate(720deg) scale(1); }
 }
 
 .npc-card h2 {
@@ -75,3 +86,9 @@ button:hover {
 .npc-card.tiefling { border-color: #8B0000; }
 .npc-card.dragonborn { border-color: #4682B4; }
 .npc-card.orc { border-color: #556B2F; }
+
+/* Class-based themes */
+.npc-card.paladin { background-color: #fffbea; border-color: #ffd700; }
+.npc-card.rogue { background-color: #1c1c1c; color: #eee; border-color: #8b0000; }
+.npc-card.wizard { background-color: #e6e6ff; border-color: #4b0082; }
+.npc-card.barbarian { background-color: #fff0f0; border-color: #8b4513; }
