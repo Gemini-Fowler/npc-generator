@@ -2,14 +2,22 @@
 
 body {
   font-family: 'Open Sans', sans-serif;
-  background: url('https://www.transparenttextures.com/patterns/paper-fibers.png') repeat;
-  background-color: #f5f0e1;
+  /* layered background: parchment texture + warm gradient + vignette */
+  background-image: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.6), rgba(245, 240, 225, 0.9)), linear-gradient(135deg, #f9f5ea 0%, #f2e9da 50%, #efe6d2 100%), url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+  background-blend-mode: overlay, normal, multiply;
+  background-size: cover, cover, auto;
   color: #2E4A3B;
   padding: 40px;
-  max-width: 800px;
-  margin: auto;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+.container {
+  width: 900px;
+  max-width: 95%;
+  margin: 20px auto;
 }
 
 h1 {
@@ -44,12 +52,14 @@ button:hover {
   border: 12px solid #d2b48c;
   border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
   font-size: 1.1em;
   line-height: 1.6;
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.5s ease, transform 0.5s ease;
+  max-width: 640px;
+  margin: 10px auto;
 }
 
 .npc-card.show {
@@ -62,9 +72,17 @@ button:hover {
 }
 
 @keyframes diceRoll {
-  0% { transform: rotate(0deg) scale(1); }
-  50% { transform: rotate(360deg) scale(1.2); }
-  100% { transform: rotate(720deg) scale(1); }
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+
+  50% {
+    transform: rotate(360deg) scale(1.2);
+  }
+
+  100% {
+    transform: rotate(720deg) scale(1);
+  }
 }
 
 .npc-card h2 {
@@ -81,31 +99,178 @@ button:hover {
   margin: 20px 0;
 }
 
+.section {
+  background: rgba(255, 255, 255, 0.65);
+  border: 2px solid rgba(46, 74, 59, 0.12);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 18px;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.center {
+  text-align: center;
+}
+
+.slider-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px 12px;
+  align-items: center;
+  margin: 8px 0 14px;
+}
+
+.slider-row label {
+  font-weight: 600;
+}
+
+.slider-value {
+  grid-column: 2 / 3;
+  justify-self: end;
+  font-size: 0.95em;
+  color: #3b5a48;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: rgba(46, 74, 59, 0.06);
+  border: 1px solid rgba(46, 74, 59, 0.06);
+}
+
+input[type="range"] {
+  width: 100%;
+  grid-column: 1 / -1;
+}
+
+.qr-box {
+  margin-top: 12px;
+}
+
+#savedList {
+  list-style: none;
+  padding-left: 0;
+}
+
+#savedList li {
+  padding: 8px;
+  border-bottom: 1px dashed rgba(46, 74, 59, 0.06);
+}
+
 /* Race-based themes */
-.npc-card.elf { border-color: #6B8E23; }
-.npc-card.tiefling { border-color: #8B0000; }
-.npc-card.dragonborn { border-color: #4682B4; }
-.npc-card.orc { border-color: #556B2F; }
-.npc-card.halfling { border-color: #DAA520; }
-.npc-card.dwarf { border-color: #A0522D; }  
-.npc-card.human { border-color: #708090; }
-.npc-card.gnome { border-color: #FF69B4; }
-.npc-card.goblin { border-color: #228B22; }
-.npc-card.undead { border-color: #4B0082; }
-.npc-card.fey { border-color: #32CD32; }
-.npc-card.aarakocra { border-color: #00CED1; }
-.npc-card.tabaxi { border-color: #D2691E; }
+.npc-card.elf {
+  border-color: #6B8E23;
+}
+
+.npc-card.tiefling {
+  border-color: #8B0000;
+}
+
+.npc-card.dragonborn {
+  border-color: #4682B4;
+}
+
+.npc-card.orc {
+  border-color: #556B2F;
+}
+
+.npc-card.halfling {
+  border-color: #DAA520;
+}
+
+.npc-card.dwarf {
+  border-color: #A0522D;
+}
+
+.npc-card.human {
+  border-color: #708090;
+}
+
+.npc-card.gnome {
+  border-color: #FF69B4;
+}
+
+.npc-card.goblin {
+  border-color: #228B22;
+}
+
+.npc-card.undead {
+  border-color: #4B0082;
+}
+
+.npc-card.fey {
+  border-color: #32CD32;
+}
+
+.npc-card.aarakocra {
+  border-color: #00CED1;
+}
+
+.npc-card.tabaxi {
+  border-color: #D2691E;
+}
 
 /* Class-based themes */
-.npc-card.paladin { background-color: #fffbea; border-color: #ffd700; }
-.npc-card.rogue { background-color: #1c1c1c; color: #eee; border-color: #8b0000; }
-.npc-card.wizard { background-color: #e6e6ff; border-color: #4b0082; }
-.npc-card.barbarian { background-color: #fff0f0; border-color: #8b4513; }
-.npc-card.cleric { background-color: #f0fff0; border-color: #32cd32; }
-.npc-card.ranger { background-color: #f5fffa; border-color: #228b22; }
-.npc-card.bard { background-color: #fff0ff; border-color: #ff69b4; }
-.npc-card.druid { background-color: #f0fff0; border-color: #6b8e23; }
-.npc-card.fighter { background-color: #f0f8ff; border-color: #00008b; }
-.npc-card.monk { background-color: #fffaf0; border-color: #daa520; }
-.npc-card.sorcerer { background-color: #f0f8ff; border-color: #ff4500; }
-.npc-card.warlock { background-color: #f8f8ff; border-color: #4b0082; }
+.npc-card.paladin {
+  background-color: #fffbea;
+  border-color: #ffd700;
+}
+
+.npc-card.rogue {
+  background-color: #1c1c1c;
+  color: #eee;
+  border-color: #8b0000;
+}
+
+.npc-card.wizard {
+  background-color: #e6e6ff;
+  border-color: #4b0082;
+}
+
+.npc-card.barbarian {
+  background-color: #fff0f0;
+  border-color: #8b4513;
+}
+
+.npc-card.cleric {
+  background-color: #f0fff0;
+  border-color: #32cd32;
+}
+
+.npc-card.ranger {
+  background-color: #f5fffa;
+  border-color: #228b22;
+}
+
+.npc-card.bard {
+  background-color: #fff0ff;
+  border-color: #ff69b4;
+}
+
+.npc-card.druid {
+  background-color: #f0fff0;
+  border-color: #6b8e23;
+}
+
+.npc-card.fighter {
+  background-color: #f0f8ff;
+  border-color: #00008b;
+}
+
+.npc-card.monk {
+  background-color: #fffaf0;
+  border-color: #daa520;
+}
+
+.npc-card.sorcerer {
+  background-color: #f0f8ff;
+  border-color: #ff4500;
+}
+
+.npc-card.warlock {
+  background-color: #f8f8ff;
+  border-color: #4b0082;
+}

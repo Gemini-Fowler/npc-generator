@@ -1,49 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>NPC Generator</title>
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
   <h1>NPC Generator</h1>
+  <div class="container">
 
-  <button id="generateBtn">Generate NPC</button>
-  <button id="saveBtn">Save NPC</button>
-  <button id="exportBtn">Export NPC</button>
+    <div id="controls" class="section controls">
+      <button id="generateBtn">Generate NPC</button>
+      <button id="saveBtn">Save NPC</button>
+      <button id="exportBtn">Export NPC</button>
+      <button id="qrBtn">Generate QR Code</button>
+      <button id="refreshDataBtn">Refresh Race/Class Data</button>
+    </div>
 
-  <div id="customBuilder">
-    <h3>Custom NPC Builder</h3>
+    <div id="customBuilder" class="section">
+      <h3>Custom NPC Builder</h3>
 
-    <label for="raceSelect">Choose Race:</label>
-    <select id="raceSelect"></select>
+      <label for="raceSelect">Choose Race:</label>
+      <select id="raceSelect"></select>
 
-    <label for="classSelect">Choose Class:</label>
-    <select id="classSelect"></select>
+      <label for="classSelect">Choose Class:</label>
+      <select id="classSelect"></select>
 
-    <h4>Personality Traits</h4>
+      <label for="campaignInput">Campaign Tag:</label>
+      <input type="text" id="campaignInput" placeholder="e.g. Curse of Strahd">
 
-    <label for="alignmentSlider">Alignment:</label>
-    <input type="range" id="alignmentSlider" min="0" max="2" value="1">
-    <span id="alignmentValue">Neutral</span>
+      <label for="notesInput">Session Notes:</label>
+      <textarea id="notesInput" rows="3" placeholder="e.g. Met in tavern, owes party a favor."></textarea>
 
-    <label for="moralitySlider">Morality:</label>
-    <input type="range" id="moralitySlider" min="0" max="2" value="1">
-    <span id="moralityValue">Neutral</span>
+      <h4>Personality Traits</h4>
 
-    <label for="socialSlider">Social:</label>
-    <input type="range" id="socialSlider" min="0" max="2" value="1">
-    <span id="socialValue">Ambivert</span>
 
-    <label for="outlookSlider">Outlook:</label>
-    <input type="range" id="outlookSlider" min="0" max="2" value="1">
-    <span id="outlookValue">Realist</span>
+      <div class="slider-row">
+        <label for="alignmentSlider">Alignment</label>
+        <div class="slider-value" id="alignmentValue">Neutral</div>
+        <input type="range" id="alignmentSlider" min="0" max="2" value="1">
+      </div>
 
-    <button id="buildBtn">Build Custom NPC</button>
+      <div class="slider-row">
+        <label for="moralitySlider">Morality</label>
+        <div class="slider-value" id="moralityValue">Neutral</div>
+        <input type="range" id="moralitySlider" min="0" max="2" value="1">
+      </div>
+
+      <div class="slider-row">
+        <label for="socialSlider">Social</label>
+        <div class="slider-value" id="socialValue">Ambivert</div>
+        <input type="range" id="socialSlider" min="0" max="2" value="1">
+      </div>
+
+      <div class="slider-row">
+        <label for="outlookSlider">Outlook</label>
+        <div class="slider-value" id="outlookValue">Realist</div>
+        <input type="range" id="outlookSlider" min="0" max="2" value="1">
+      </div>
+
+      <button id="buildBtn">Build Custom NPC</button>
+    </div>
+
   </div>
 
-  <div id="npcCard" class="npc-card"></div>
+  <div id="display" class="section center">
+    <div id="npcCard" class="npc-card"></div>
+    <div id="qrCode" class="qr-box"></div>
+  </div>
+
+  <div id="savedSection" class="section">
+    <h3>Saved NPCs</h3>
+    <label for="campaignFilter">Filter by Campaign:</label>
+    <select id="campaignFilter">
+      <option value="">All</option>
+    </select>
+    <ul id="savedList"></ul>
+  </div>
+
+  </div>
 
   <script src="script.js"></script>
 </body>
+
 </html>
