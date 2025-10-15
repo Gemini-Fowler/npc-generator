@@ -50,11 +50,45 @@ async function fetchOptions(endpoint) {
   return data.results.map(item => capitalize(item.name));
 }
 
-async function getCachedOptions(key, endpoint) {
+// curated extras to ensure dropdowns have plenty of options
+const extraRaces = [
+  "Aarakocra", "Aasimar", "Bugbear", "Centaur", "Changeling", "Kobold",
+  "Lizardfolk", "Locathah", "Minotaur", "Satyr", "Shifter", "Simic Hybrid",
+  "Tortle", "Vedalken", "Warforged", "Yuan-Ti", "Firbolg", "Triton",
+  "Goliath", "Hobgoblin", "Kenku", "Tabaxi", "Goblin", "Orc",
+  "Fey", "Undead", "Dragonborn", "Halfling", "Dwarf", "Elf"
+];
+
+const extraClasses = [
+  "Artificer", "Blood Hunter", "Psion", "Mystic", "Witch", "Gunslinger",
+  "Warlord", "Alchemist", "Inquisitor", "Arcanist", "Shaman", "Summoner",
+  "Spellblade", "Battlemaster", "Scout", "Hexblade", "Templar", "Engineer",
+  "Beastmaster", "Cavalier", "Samurai", "Oracle", "Sage", "Ritualist",
+  "Wardens"
+];
+
+function padOptions(options, min, extras = []) {
+  const set = new Set(options.map(o => capitalize(o)));
+  // add extras first
+  for (let e of extras) {
+    if (set.size >= min) break;
+    set.add(capitalize(e));
+  }
+  // if still short, add generic variants
+  let counter = 1;
+  while (set.size < min) {
+    set.add(`Variant ${counter}`);
+    counter++;
+  }
+  return Array.from(set);
+}
+
+async function getCachedOptions(key, endpoint, padTo = 0, extras = []) {
   const cached = localStorage.getItem(key);
   if (cached) return JSON.parse(cached);
 
-  const options = await fetchOptions(endpoint);
+  let options = await fetchOptions(endpoint);
+  if (padTo > 0) options = padOptions(options, padTo, extras);
   localStorage.setItem(key, JSON.stringify(options));
   return options;
 }
@@ -71,8 +105,8 @@ function populateDropdown(id, options) {
 }
 
 async function populateAllDropdowns() {
-  const raceOptions = await getCachedOptions("raceList", "races");
-  const classOptions = await getCachedOptions("classList", "classes");
+  const raceOptions = await getCachedOptions("raceList", "races", 25, extraRaces);
+  const classOptions = await getCachedOptions("classList", "classes", 25, extraClasses);
   populateDropdown("raceSelect", raceOptions);
   populateDropdown("classSelect", classOptions);
 }
