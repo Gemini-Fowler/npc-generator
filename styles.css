@@ -86,9 +86,26 @@ button:hover {
 .npc-card.tiefling { border-color: #8B0000; }
 .npc-card.dragonborn { border-color: #4682B4; }
 .npc-card.orc { border-color: #556B2F; }
+.npc-card.halfling { border-color: #DAA520; }
+.npc-card.dwarf { border-color: #A0522D; }  
+.npc-card.human { border-color: #708090; }
+.npc-card.gnome { border-color: #FF69B4; }
+.npc-card.goblin { border-color: #228B22; }
+.npc-card.undead { border-color: #4B0082; }
+.npc-card.fey { border-color: #32CD32; }
+.npc-card.aarakocra { border-color: #00CED1; }
+.npc-card.tabaxi { border-color: #D2691E; }
 
 /* Class-based themes */
 .npc-card.paladin { background-color: #fffbea; border-color: #ffd700; }
 .npc-card.rogue { background-color: #1c1c1c; color: #eee; border-color: #8b0000; }
 .npc-card.wizard { background-color: #e6e6ff; border-color: #4b0082; }
 .npc-card.barbarian { background-color: #fff0f0; border-color: #8b4513; }
+.npc-card.cleric { background-color: #f0fff0; border-color: #32cd32; }
+.npc-card.ranger { background-color: #f5fffa; border-color: #228b22; }
+.npc-card.bard { background-color: #fff0ff; border-color: #ff69b4; }
+.npc-card.druid { background-color: #f0fff0; border-color: #6b8e23; }
+.npc-card.fighter { background-color: #f0f8ff; border-color: #00008b; }
+.npc-card.monk { background-color: #fffaf0; border-color: #daa520; }
+.npc-card.sorcerer { background-color: #f0f8ff; border-color: #ff4500; }
+.npc-card.warlock { background-color: #f8f8ff; border-color: #4b0082; }

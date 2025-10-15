@@ -1,17 +1,3 @@
-const races = [
-  "Elf", "Dwarf", "Human", "Orc", "Halfling", "Gnome", "Tiefling", "Dragonborn",
-  "Half-Orc", "Half-Elf", "Aasimar", "Air Genasi", "Earth Genasi", "Fire Genasi",
-  "Water Genasi", "Bugbear", "Goblin", "Hobgoblin", "Kobold", "Lizardfolk",
-  "Tabaxi", "Triton", "Yuan-ti Pureblood"
-];
-
-const classes = [
-  "Wizard", "Rogue", "Cleric", "Fighter", "Ranger", "Paladin", "Bard", "Druid",
-  "Monk", "Warlock", "Sorcerer", "Barbarian", "Artificer", "Blood Hunter",
-  "Cavalier", "Samurai", "Gunslinger", "Mystic", "Warden", "Alchemist", "Archer",
-  "Assassin", "Beastmaster", "Shadowdancer"
-];
-
 const backgrounds = [
   "Noble", "Soldier", "Criminal", "Merchant", "Sailor", "Hermit", "Folk Hero",
   "Acolyte", "Entertainer", "Guild Artisan", "Outlander", "Sage", "Urchin"
@@ -54,8 +40,28 @@ function getSliderValue(id, options) {
   return options[index];
 }
 
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+async function fetchOptions(endpoint) {
+  const res = await fetch(`https://www.dnd5eapi.co/api/${endpoint}`);
+  const data = await res.json();
+  return data.results.map(item => capitalize(item.name));
+}
+
+async function getCachedOptions(key, endpoint) {
+  const cached = localStorage.getItem(key);
+  if (cached) return JSON.parse(cached);
+
+  const options = await fetchOptions(endpoint);
+  localStorage.setItem(key, JSON.stringify(options));
+  return options;
+}
+
 function populateDropdown(id, options) {
   const select = document.getElementById(id);
+  select.innerHTML = ""; // Clear existing options
   options.forEach(opt => {
     const option = document.createElement("option");
     option.value = opt;
@@ -64,8 +70,14 @@ function populateDropdown(id, options) {
   });
 }
 
-populateDropdown("raceSelect", races);
-populateDropdown("classSelect", classes);
+async function populateAllDropdowns() {
+  const raceOptions = await getCachedOptions("raceList", "races");
+  const classOptions = await getCachedOptions("classList", "classes");
+  populateDropdown("raceSelect", raceOptions);
+  populateDropdown("classSelect", classOptions);
+}
+
+populateAllDropdowns();
 
 ["alignmentSlider", "moralitySlider", "socialSlider", "outlookSlider"].forEach(id => {
   document.getElementById(id).addEventListener("input", () => {
@@ -75,10 +87,13 @@ populateDropdown("classSelect", classes);
   });
 });
 
-function generateNPC(custom = {}) {
+async function generateNPC(custom = {}) {
+  const raceList = await getCachedOptions("raceList", "races");
+  const classList = await getCachedOptions("classList", "classes");
+
   return {
-    race: custom.race || getRandom(races),
-    class: custom.class || getRandom(classes),
+    race: custom.race || getRandom(raceList),
+    class: custom.class || getRandom(classList),
     background: getRandom(backgrounds),
     level: getRandom(levels),
     personality: {
@@ -113,8 +128,8 @@ function displayNPC(npc) {
   `;
 }
 
-document.getElementById("generateBtn").addEventListener("click", () => {
-  const npc = generateNPC();
+document.getElementById("generateBtn").addEventListener("click", async () => {
+  const npc = await generateNPC();
   displayNPC(npc);
 });
 
@@ -126,8 +141,8 @@ document.getElementById("saveBtn").addEventListener("click", () => {
   alert("NPC saved!");
 });
 
-document.getElementById("exportBtn").addEventListener("click", () => {
-  const npc = generateNPC();
+document.getElementById("exportBtn").addEventListener("click", async () => {
+  const npc = await generateNPC();
   const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(npc, null, 2));
   const downloadAnchor = document.createElement('a');
   downloadAnchor.setAttribute("href", dataStr);
@@ -137,7 +152,7 @@ document.getElementById("exportBtn").addEventListener("click", () => {
   downloadAnchor.remove();
 });
 
-document.getElementById("buildBtn").addEventListener("click", () => {
+document.getElementById("buildBtn").addEventListener("click", async () => {
   const race = document.getElementById("raceSelect").value;
   const classType = document.getElementById("classSelect").value;
 
@@ -147,8 +162,8 @@ document.getElementById("buildBtn").addEventListener("click", () => {
   const outlook = getSliderValue("outlookSlider", traits.outlook);
 
   const npc = {
-    race: race || getRandom(races),
-    class: classType || getRandom(classes),
+    race: race || getRandom(await getCachedOptions("raceList", "races")),
+    class: classType || getRandom(await getCachedOptions("classList", "classes")),
     background: getRandom(backgrounds),
     level: getRandom(levels),
     personality: {
@@ -161,4 +176,11 @@ document.getElementById("buildBtn").addEventListener("click", () => {
   };
 
   displayNPC(npc);
+});
+
+document.getElementById("refreshDataBtn")?.addEventListener("click", async () => {
+  localStorage.removeItem("raceList");
+  localStorage.removeItem("classList");
+  await populateAllDropdowns();
+  alert("Race and class data refreshed!");
 });
